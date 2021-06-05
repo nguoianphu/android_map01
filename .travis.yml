@@ -22,4 +22,3 @@ before_script:
 
 script:
   - ./gradlew build --no-daemon --stacktrace
-  - ./gradlew connectedAndroidTest
