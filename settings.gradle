@@ -1,0 +1,2 @@
+rootProject.name = "map01"
+include ':app'
