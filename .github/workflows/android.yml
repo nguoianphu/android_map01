@@ -32,9 +32,12 @@ jobs:
       run: ./gradlew assemble
       
     - name: Generate and sign Java keytool
+      run: |
+        export BUILD_TOOLS=$(cat app/build.gradle | grep buildToolsVersion | cut -d '"' -f2)
+        echo "BUILD_TOOLS=$BUILD_TOOLS" >> $GITHUB_ENV
       env:
        MY_ZIP_PASSWORD: ${{ secrets.MY_ZIP_PASSWORD }}
-       BUILD_TOOLS: '29.0.3'
+       BUILD_TOOLS: ${{env.BUILD_TOOLS}}
       run: |
         cd $GITHUB_WORKSPACE
         echo "Signing our apk"
