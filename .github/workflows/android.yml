@@ -114,6 +114,20 @@ jobs:
         git tag ${TAG// /}
         git tag -l
         echo "TAG=$TAG" >> $GITHUB_ENV
+        
+    - name: Create tag
+      if: runner.os == 'windows'
+      run: |
+        cd $GITHUB_WORKSPACE
+        $DATE=$(date).toString('yyyy_m_d_hms')
+        $GIT_COMMIT="COMMIT_$(git log --format=%h -1)"
+        $APP_NAME=$(((cat settings.gradle | Select-String rootProject.name ) -Split '"')[1])
+        $APP_VERSION_CURRENT=$(((cat app/build.gradle | Select-String versionName) -Split '"')[1)
+        $APK_NAME=${APP_NAME}+${APP_VERSION_CURRENT}+${DATE}+${GIT_COMMIT}
+        git tag ${APK_NAME}
+        git tag -l
+        echo "TAG=$APK_NAME" >> $GITHUB_ENV
+        
     - name: Release
       if: runner.os == 'windows'
       uses: softprops/action-gh-release@v1
@@ -127,3 +141,13 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dist-without-markdown
+        path: |
+          app/build/outputs/apk/release/keys.zip
+          app/build/outputs/apk/release/*.apk
+          app/build/outputs/apk/debug/*.apk
+          
+          
