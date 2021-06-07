@@ -32,11 +32,16 @@ jobs:
           test-command: ./gradlew connectedDebugAndroidTest
           system-image: system-images;android-25;google_apis;x86
 
-      # And finally run the release build
+      # Run the debug build
       - run:
-          name: Assemble release build
+          name: Assemble debug build
           command: |
-            ./gradlew assembleRelease    
+            ./gradlew assembleDebug --stacktrace
+
+      # Store build artifacts
+      - store_artifacts:
+          path: app/build/outputs/apk/debug
+          destination: artifact-debug-file            
 
 workflows:
   # Below is the definition of your workflow.
