@@ -128,7 +128,7 @@ jobs:
         echo "TAG=$APK_NAME" >> $env:GITHUB_ENV
         
     - name: Release
-      if: runner.os == 'windows'
+      if: runner.os == 'windows_or_ubuntu'
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{env.TAG}}
