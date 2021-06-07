@@ -40,7 +40,7 @@ jobs:
       if: runner.os != 'windows'
       run: ./gradlew assembleDebug --stacktrace
       
-    - name: Build with Gradle - Debug APK
+    - name: Build with Gradle - Debug APK on Windows
       if: runner.os == 'windows'
       run: .\gradlew.bat assembleDebug --stacktrace
       
@@ -101,6 +101,7 @@ jobs:
         7z a -tzip -p${MY_ZIP_PASSWORD} app/build/outputs/apk/release/keys.zip -r keys
       
     - name: Create tag
+      if: runner.os != 'windows'
       run: |
         cd $GITHUB_WORKSPACE
         export DATE=$(date +'DATE_%Y_%m_%d_%H%M%S')
