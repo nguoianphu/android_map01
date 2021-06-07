@@ -17,6 +17,12 @@ jobs:
       # Checkout the code as the first step.
       - checkout
 
+      # Firstly make gradlew executed
+      - run:
+          name: Firstly make gradlew executed
+          command: |
+            chmod +x gradlew
+
       # The next step will run the unit tests
       - android/run-tests:
           test-command: ./gradlew lint testDebug --continue
