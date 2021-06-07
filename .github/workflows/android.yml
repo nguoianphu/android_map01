@@ -119,7 +119,7 @@ jobs:
       if: runner.os == 'windows'
       run: |
         cd $GITHUB_WORKSPACE
-        $DATE=$(date).toString('yyyy_m_d_hms')
+        $DATE=$(Get-Date -Format "yyyy_MM_dd_Hms")
         $GIT_COMMIT="COMMIT_$(git log --format=%h -1)"
         $APP_NAME=$(((cat settings.gradle | Select-String rootProject.name ) -Split '"')[1])
         $APP_VERSION_CURRENT=$(((cat app/build.gradle | Select-String versionName) -Split '"'))[1]
