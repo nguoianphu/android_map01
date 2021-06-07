@@ -122,7 +122,7 @@ jobs:
         $DATE=$(date).toString('yyyy_m_d_hms')
         $GIT_COMMIT="COMMIT_$(git log --format=%h -1)"
         $APP_NAME=$(((cat settings.gradle | Select-String rootProject.name ) -Split '"')[1])
-        $APP_VERSION_CURRENT=$(((cat app/build.gradle | Select-String versionName) -Split '"')[1)
+        $APP_VERSION_CURRENT=$(((cat app/build.gradle | Select-String versionName) -Split '"'))[1]
         $APK_NAME=${APP_NAME}+${APP_VERSION_CURRENT}+${DATE}+${GIT_COMMIT}
         git tag ${APK_NAME}
         git tag -l
