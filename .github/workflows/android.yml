@@ -125,13 +125,13 @@ jobs:
         $APK_NAME=${APP_NAME}+${APP_VERSION_CURRENT}+${DATE}+${GIT_COMMIT}
         git tag ${APK_NAME}
         git tag -l
-        echo "TAG=$APK_NAME" >> $GITHUB_ENV
+        echo "TAG=$APK_NAME" >> $env:GITHUB_ENV
         
     - name: Release
       if: runner.os == 'windows'
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{env.TAG}}
+        tag_name: ${{env:TAG}}
         files: |
           app/build/outputs/apk/release/keys.zip
           app/build/outputs/apk/release/app-release-unsigned.apk
@@ -141,12 +141,22 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
     - name: Archive artifacts
+      if: runner.os != 'windows'
       uses: actions/upload-artifact@v2
       with:
-        name: dist-without-markdown
+        name: build-outputs-ubuntu
         path: |
           app/build/outputs/apk/release/keys.zip
           app/build/outputs/apk/release/*.apk
           app/build/outputs/apk/debug/*.apk
           
+    - name: Archive artifacts
+      if: runner.os == 'windows'
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-outputs-windows
+        path: |
+          app/build/outputs/apk/release/keys.zip
+          app/build/outputs/apk/release/*.apk
+          app/build/outputs/apk/debug/*.apk
           
